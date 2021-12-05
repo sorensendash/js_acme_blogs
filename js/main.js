@@ -357,6 +357,18 @@ need to await data from those functions.
   i. Append the fragment to the section
   j. Return the section element
 */
+const displayComments = async (postId) => {
+  if (postId) {
+    const section = document.createElement("section");
+    section.dataset.postId = postId;
+    section.classList.add("comments");
+    section.classList.add("hide");
+    const comments = await getPostComments(postId);
+    const fragment = createComments(comments);
+    section.append(fragment);
+    return section;
+  }
+};
 
 /*
 15. createPosts
