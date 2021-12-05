@@ -213,6 +213,16 @@ const createComments = (commentsData) => {
   Week 13. I do not recommend proceeding beyond this point until you have completed the
   learning module for Week 13.
 */
+const populateSelectMenu = (userData) => {
+  if (userData) {
+    const selectMenu = document.getElementById("selectMenu");
+    const optionsArray = createSelectOptions(userData);
+    optionsArray.forEach((option) => {
+      selectMenu.append(option);
+    });
+    return selectMenu;
+  }
+};
 
 /*
 10. getUsers
