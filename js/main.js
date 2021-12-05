@@ -303,6 +303,19 @@ const getUser = async (userId) => {
   f. Await the users data response
   g. Return the JSON data
 */
+const getPostComments = async (postId) => {
+  if (postId) {
+    try {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/comments?postId=${postId}`
+      );
+      const data = await response.json();
+      return data;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+};
 
 /*
 NOTE: The next functions will depend on the async API data functions we just created.
