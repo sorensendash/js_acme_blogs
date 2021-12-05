@@ -149,7 +149,11 @@ const isDom = (el) => {
   will pass for addButtonListeners until toggleComments exists. I recommend
   waiting on the logic inside the toggleComments function until we get there.
 */
-
+const addButtonListeners = () => {
+  const mainElement = document.querySelector("main");
+  const mainButtons = mainElement.querySelectorAll("button");
+  console.log(mainButtons);
+};
 /*
 7. removeButtonListeners
   a. Selects all buttons nested inside the main element
@@ -160,6 +164,7 @@ const isDom = (el) => {
   e. Refer to the addButtonListeners function as this should be nearly identical
   f. Return the button elements which were selected
 */
+const removeButtonListeners = () => {};
 
 /*
 8. createComments
@@ -324,6 +329,15 @@ This means their sole purpose is to call dependencies with the correct data in t
   toggleCommentSection and the button element returned from
   toggleCommentButton: [section, button]
 */
+const toggleComments = (event, postId) => {
+  if (event && postId) {
+    event.target.listener = true;
+    const resultArray = [];
+    resultArray.push(toggleCommentSection(postId));
+    resultArray.push(toggleCommentButton(postId));
+    return resultArray;
+  }
+};
 
 /*
 18. refreshPosts
@@ -381,7 +395,9 @@ This means their sole purpose is to call dependencies with the correct data in t
   f. NOTE: All of the above needs to be correct for you app to function correctly.
   However, I can only test if the initApp function exists. It does not return anything.
 */
-const initApp = () => {};
+const initApp = () => {
+  addButtonListeners;
+};
 
 /*
 NOTE: There is one last step to get your app to function correctly. I cannot test for this, but you
