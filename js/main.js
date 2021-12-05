@@ -234,7 +234,15 @@ const populateSelectMenu = (userData) => {
   e. Await the users data response
   f. Return the JSON data
 */
-
+const getUsers = async () => {
+  try {
+    const response = await fetch(`https://jsonplaceholder.typicode.com/users`);
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};
 /*
 11. getUserPosts
   a. Receives a user id as a parameter
@@ -246,6 +254,19 @@ const populateSelectMenu = (userData) => {
   f. Await the users data response
   g. Return the JSON data
 */
+const getUserPosts = async (userId) => {
+  if (userId) {
+    try {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/posts?userId=${userId}`
+      );
+      const data = await response.json();
+      return data;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+};
 
 /*
 12. getUser
