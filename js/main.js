@@ -279,7 +279,19 @@ const getUserPosts = async (userId) => {
   f. Await the user data response
   g. Return the JSON data
 */
-
+const getUser = async (userId) => {
+  if (userId) {
+    try {
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/users/${userId}`
+      );
+      const data = await response.json();
+      return data;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+};
 /*
 13. getPostComments
   a. Receives a post id as a parameter
