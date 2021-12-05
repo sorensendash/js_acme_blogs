@@ -396,7 +396,37 @@ const displayComments = async (postId) => {
   s. After the loop completes, append the article element to the fragment
   t. Return the fragment element
 */
-
+const createPosts = async (postData) => {
+  if (postData) {
+    const fragment = document.createDocumentFragment();
+    for (const post of postData) {
+      const article = document.createElement("article");
+      const header = createElemWithText("h2", post.title);
+      const body = createElemWithText("p", post.body);
+      const postId = createElemWithText("p", `Post ID: ${post.id}`);
+      const author = await getUser(post.userId);
+      const authorText = createElemWithText(
+        "p",
+        `Author: ${author.name} with ${author.company.name}`
+      );
+      const catchPhrase = createElemWithText("p", author.company.catchPhrase);
+      const button = document.createElement("button");
+      button.textContent = "Show Comments";
+      button.dataset.postId = post.id;
+      article.append(header);
+      article.append(body);
+      article.append(postId);
+      article.append(author);
+      article.append(authorText);
+      article.append(catchPhrase);
+      article.append(button);
+      const section = await displayComments(post.id);
+      article.append(section);
+      fragment.append(article);
+    }
+    return fragment;
+  }
+};
 /*
 16. displayPosts
   a. Dependencies: createPosts, createElemWithText
@@ -411,6 +441,21 @@ const displayComments = async (postId) => {
   f. Appends the element to the main element
   g. Returns the element variable
 */
+const displayPosts = async (postData) => {
+  const main = document.querySelector("main");
+  const element = postData
+    ? await createPosts(postData)
+    : createDefaultParagraph();
+  main.append(element);
+  return element;
+};
+
+const createDefaultParagraph = () => {
+  const paragraph = document.createElement("p");
+  paragraph.textContent = "Select an Employee to display their posts.";
+  paragraph.classList.add = "default-text";
+  return paragraph;
+};
 
 /*
 NOTE: This is the last group of functions. I call them “procedural functions” because they exist
@@ -462,11 +507,16 @@ const toggleComments = (event, postId) => {
 */
 const refreshPosts = async (postData) => {
   if (postData) {
+    const results = [];
     const removeButtons = removeButtonListeners;
+    results.push(removeButtons);
     const main = deleteChildElements;
+    results.push(main);
     const fragment = await displayPosts(postData);
+    results.push(fragment);
     const addButtons = addButtonListeners;
-    const results = [removeButtons, main, fragment, addButtons];
+    results.push(addButtons);
+    console.log(results);
     return results;
   }
 };
@@ -511,7 +561,7 @@ const refreshPosts = async (postData) => {
 */
 const initApp = () => {
   const home = document.getElementsByTagName("body");
-  home[0].addEventListener("click", addButtonListeners);
+  //home[0].addEventListener("click", displayPosts);
 };
 
 /*
