@@ -560,9 +560,8 @@ const selectMenuChangeEventHandler = async (event) => {
 */
 const initPage = async () => {
   const response = await getUsers();
-  const data = await response.json();
-  const select = populateSelectMenu(data);
-  const result = [data, select];
+  const select = populateSelectMenu(response);
+  const result = [response, select];
   return result;
 };
 /*
