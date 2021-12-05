@@ -150,9 +150,17 @@ const isDom = (el) => {
   waiting on the logic inside the toggleComments function until we get there.
 */
 const addButtonListeners = () => {
-  const mainElement = document.querySelector("main");
-  const mainButtons = mainElement.querySelectorAll("button");
-  console.log(mainButtons);
+  const main = document.querySelector("main");
+  const buttons = main.querySelectorAll("button");
+  if (buttons.length) {
+    buttons.forEach((button) => {
+      const postId = button.dataset.id;
+      button.addEventListener("click", (event) => {
+        toggleComments(event, postId);
+      });
+    });
+  }
+  return buttons;
 };
 /*
 7. removeButtonListeners
@@ -164,7 +172,19 @@ const addButtonListeners = () => {
   e. Refer to the addButtonListeners function as this should be nearly identical
   f. Return the button elements which were selected
 */
-const removeButtonListeners = () => {};
+const removeButtonListeners = () => {
+  const main = document.querySelector("main");
+  const buttons = main.querySelectorAll("button");
+  if (buttons.length) {
+    buttons.forEach((button) => {
+      const postId = button.dataset.id;
+      button.removeEventListener("click", (event) => {
+        toggleComments(event, postId);
+      });
+    });
+  }
+  return buttons;
+};
 
 /*
 8. createComments
@@ -402,8 +422,8 @@ This means their sole purpose is to call dependencies with the correct data in t
   toggleCommentButton: [section, button]
 */
 const toggleComments = (event, postId) => {
+  event.target.listener = true;
   if (event && postId) {
-    event.target.listener = true;
     const resultArray = [];
     resultArray.push(toggleCommentSection(postId));
     resultArray.push(toggleCommentButton(postId));
@@ -428,6 +448,16 @@ const toggleComments = (event, postId) => {
   l. Return an array of the results from the functions called: [removeButtons, main,
   fragment, addButtons]
 */
+const refreshPosts = async (postData) => {
+  if (postData) {
+    const removeButtons = removeButtonListeners;
+    const main = deleteChildElements;
+    const fragment = await displayPosts(postData);
+    const addButtons = addButtonListeners;
+    const results = [removeButtons, main, fragment, addButtons];
+    return results;
+  }
+};
 
 /*
 19. selectMenuChangeEventHandler
@@ -468,7 +498,8 @@ const toggleComments = (event, postId) => {
   However, I can only test if the initApp function exists. It does not return anything.
 */
 const initApp = () => {
-  addButtonListeners;
+  const home = document.getElementsByTagName("body");
+  home[0].addEventListener("click", addButtonListeners);
 };
 
 /*
