@@ -182,6 +182,22 @@ const removeButtonListeners = () => {};
   k. Append the article element to the fragment
   l. Return the fragment element
 */
+const createComments = (commentsData) => {
+  if (commentsData) {
+    const fragElement = document.createDocumentFragment();
+    commentsData.forEach((comment) => {
+      articleElement = document.createElement("article");
+      headerElement = createElemWithText("h3", comment.name);
+      bodyElement = createElemWithText("p", comment.body);
+      emailElement = createElemWithText("p", `From: ${comment.email}`);
+      articleElement.append(headerElement);
+      articleElement.append(bodyElement);
+      articleElement.append(emailElement);
+      fragElement.append(articleElement);
+    });
+    return fragElement;
+  }
+};
 
 /*
 9. populateSelectMenu
