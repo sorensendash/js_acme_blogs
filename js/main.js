@@ -516,7 +516,6 @@ const refreshPosts = async (postData) => {
     results.push(fragment);
     const addButtons = addButtonListeners;
     results.push(addButtons);
-    console.log(results);
     return results;
   }
 };
@@ -538,8 +537,7 @@ const selectMenuChangeEventHandler = async (event) => {
   const result = [];
   const userId = event.target.value || 1;
   result.push(userId);
-  const response = await getUserPosts(userId);
-  const data = await response.json();
+  const data = await getUserPosts(userId);
   result.push(data);
   const refreshPostsArray = await refreshPosts(data);
   result.push(refreshPostsArray);
