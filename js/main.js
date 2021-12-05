@@ -534,6 +534,17 @@ const refreshPosts = async (postData) => {
   i. Return an array with the userId, posts and the array returned from refreshPosts:
   [userId, posts, refreshPostsArray]
 */
+const selectMenuChangeEventHandler = async (event) => {
+  const result = [];
+  const userId = event.target.value || 1;
+  result.push(userId);
+  const response = await getUserPosts(userId);
+  const data = await response.json();
+  result.push(data);
+  const refreshPostsArray = await refreshPosts(data);
+  result.push(refreshPostsArray);
+  return result;
+};
 
 /*
 20. initPage
@@ -547,7 +558,13 @@ const refreshPosts = async (postData) => {
   h. Return an array with users JSON data from getUsers and the select element
   result from populateSelectMenu: [users, select]
 */
-
+const initPage = async () => {
+  const response = await getUsers();
+  const data = await response.json();
+  const select = populateSelectMenu(data);
+  const result = [data, select];
+  return result;
+};
 /*
 21. initApp
   a. Dependencies: initPage, selectMenuChangeEventHandler
@@ -560,8 +577,9 @@ const refreshPosts = async (postData) => {
   However, I can only test if the initApp function exists. It does not return anything.
 */
 const initApp = () => {
-  const home = document.getElementsByTagName("body");
-  //home[0].addEventListener("click", displayPosts);
+  initPage();
+  const selectMenu = document.getElementById("selectMenu");
+  selectMenu.addEventListener("change", selectMenuChangeEventHandler);
 };
 
 /*
