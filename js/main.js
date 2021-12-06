@@ -157,7 +157,13 @@ const addButtonListeners = () => {
   if (buttonsArray.length) {
     buttonsArray.forEach((button) => {
       const postId = button.dataset.postId;
-      button.addEventListener("click", toggleComments(event, postId), false);
+      button.addEventListener(
+        "click",
+        function (event) {
+          toggleComments(event, postId);
+        },
+        false
+      );
     });
   }
   return buttonsArray;
