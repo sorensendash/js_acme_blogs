@@ -480,8 +480,8 @@ This means their sole purpose is to call dependencies with the correct data in t
   toggleCommentButton: [section, button]
 */
 const toggleComments = (event, postId) => {
-  event.target.listener = true;
   if (event && postId) {
+    event.target.listener = true;
     const resultArray = [];
     resultArray.push(toggleCommentSection(postId));
     resultArray.push(toggleCommentButton(postId));
