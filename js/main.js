@@ -540,14 +540,15 @@ const refreshPosts = async (postData) => {
   i. Return an array with the userId, posts and the array returned from refreshPosts:
   [userId, posts, refreshPostsArray]
 */
-const selectMenuChangeEventHandler = async () => {
+const selectMenuChangeEventHandler = async (event) => {
   const result = [];
-  const userId = event.target.value || 1;
+  const userId = event?.target?.value || 1;
   const posts = await getUserPosts(userId);
   const refreshPostsArray = await refreshPosts(posts);
   result.push(userId);
   result.push(posts);
   result.push(refreshPostsArray);
+  console.log(result);
   return result;
 };
 
