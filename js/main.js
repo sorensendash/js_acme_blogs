@@ -153,15 +153,14 @@ const isDom = (el) => {
 const addButtonListeners = () => {
   const main = document.querySelector("main");
   const buttons = main.querySelectorAll("button");
-  if (buttons.length) {
-    buttons.forEach((button) => {
-      const postId = button.dataset.id;
-      button.addEventListener("click", (event) => {
-        toggleComments(event, postId);
-      });
+  const buttonsArray = Array.from(buttons);
+  if (buttonsArray.length) {
+    buttonsArray.forEach((button) => {
+      const postId = button.dataset.postId;
+      button.addEventListener("click", toggleComments(event, postId), false);
     });
   }
-  return buttons;
+  return buttonsArray;
 };
 /*
 7. removeButtonListeners
@@ -176,15 +175,14 @@ const addButtonListeners = () => {
 const removeButtonListeners = () => {
   const main = document.querySelector("main");
   const buttons = main.querySelectorAll("button");
-  if (buttons.length) {
-    buttons.forEach((button) => {
-      const postId = button.dataset.id;
-      button.removeEventListener("click", (event) => {
-        toggleComments(event, postId);
-      });
+  const buttonsArray = Array.from(buttons);
+  if (buttonsArray.length) {
+    buttonsArray.forEach((button) => {
+      const postId = button.dataset.postId;
+      button.removeEventListener("click", toggleComments(event, postId), false);
     });
   }
-  return buttons;
+  return buttonsArray;
 };
 
 /*
@@ -417,7 +415,6 @@ const createPosts = async (postData) => {
       article.append(header);
       article.append(body);
       article.append(postId);
-      article.append(author);
       article.append(authorText);
       article.append(catchPhrase);
       article.append(button);
@@ -483,8 +480,10 @@ const toggleComments = (event, postId) => {
   if (event && postId) {
     event.target.listener = true;
     const resultArray = [];
-    resultArray.push(toggleCommentSection(postId));
-    resultArray.push(toggleCommentButton(postId));
+    const section = toggleCommentSection(postId);
+    const button = toggleCommentButton(postId);
+    resultArray.push(section);
+    resultArray.push(button);
     return resultArray;
   }
 };
@@ -508,11 +507,12 @@ const toggleComments = (event, postId) => {
 */
 const refreshPosts = async (postData) => {
   if (postData) {
-    const results = [];
-    const removeButtons = removeButtonListeners;
-    const main = deleteChildElements("main");
+    const removeButtons = removeButtonListeners();
+    const mainElement = document.querySelector("main");
+    const main = deleteChildElements(mainElement);
     const fragment = await displayPosts(postData);
-    const addButtons = addButtonListeners;
+    const addButtons = addButtonListeners();
+    const results = [];
     results.push(removeButtons);
     results.push(main);
     results.push(fragment);
@@ -534,13 +534,13 @@ const refreshPosts = async (postData) => {
   i. Return an array with the userId, posts and the array returned from refreshPosts:
   [userId, posts, refreshPostsArray]
 */
-const selectMenuChangeEventHandler = async (event) => {
+const selectMenuChangeEventHandler = async () => {
   const result = [];
   const userId = event.target.value || 1;
+  const posts = await getUserPosts(userId);
+  const refreshPostsArray = await refreshPosts(posts);
   result.push(userId);
-  const data = await getUserPosts(userId);
-  result.push(data);
-  const refreshPostsArray = await refreshPosts(data);
+  result.push(posts);
   result.push(refreshPostsArray);
   return result;
 };
