@@ -119,15 +119,16 @@ const toggleCommentButton = (postId) => {
 */
 
 const deleteChildElements = (parentElement) => {
-  if (isDom(parentElement)) {
-    let child = parentElement.lastElementChild;
-    while (child) {
-      parentElement.removeChild(child);
-      child = parentElement.lastElementChild;
+  if (parentElement) {
+    if (isDom(parentElement)) {
+      let child = parentElement.lastElementChild;
+      while (child) {
+        parentElement.removeChild(child);
+        child = parentElement.lastElementChild;
+      }
+      return parentElement;
     }
-    return parentElement;
   }
-  return undefined;
 };
 
 const isDom = (el) => {
@@ -452,8 +453,8 @@ const displayPosts = async (postData) => {
 
 const createDefaultParagraph = () => {
   const paragraph = document.createElement("p");
+  paragraph.classList.add("default-text");
   paragraph.textContent = "Select an Employee to display their posts.";
-  paragraph.classList.add = "default-text";
   return paragraph;
 };
 
@@ -509,12 +510,12 @@ const refreshPosts = async (postData) => {
   if (postData) {
     const results = [];
     const removeButtons = removeButtonListeners;
-    results.push(removeButtons);
-    const main = deleteChildElements;
-    results.push(main);
+    const main = deleteChildElements("main");
     const fragment = await displayPosts(postData);
-    results.push(fragment);
     const addButtons = addButtonListeners;
+    results.push(removeButtons);
+    results.push(main);
+    results.push(fragment);
     results.push(addButtons);
     return results;
   }
@@ -576,7 +577,9 @@ const initPage = async () => {
 const initApp = () => {
   initPage();
   const selectMenu = document.getElementById("selectMenu");
-  selectMenu.addEventListener("change", selectMenuChangeEventHandler);
+  selectMenu.addEventListener("change", selectMenuChangeEventHandler, false);
+  //const main = document.querySelector("main");
+  //main.addEventListener("click", displayPosts);
 };
 
 /*
